@@ -31,10 +31,6 @@
 // Include a timer that moves to the next person if the user is not clicking on next or prev. If the user clicks on next or prev, the timer should be reset. The timer should transition between people every 10 seconds.
 
 
-var classObject;
-var classmateNumberTracker = 0;
-var interval;
-
 $(document).ready(function(){
   displayFirstObject();
   indicatorMaker();
@@ -44,6 +40,10 @@ $(document).ready(function(){
   $('#display-container').on('click', 'li', indexSelector);
 });
 
+
+var classObject;
+var classmateNumberTracker = 0;
+var interval;
 
 //Move to next classmate when next button is clicked
 function nextClick() {
@@ -72,6 +72,16 @@ function prevClick() {
   }
   appendClassmate();
   $('p, h3').fadeIn('slow');
+}
+
+//function that allows user to select and index from the carousel and move to that shoutout
+function indexSelector() {
+  universalClickHandler();
+  classmateNumberTracker = $(this).data('index');
+  appendClassmate();
+  $('p, h3').fadeIn('slow');
+  $('#indicatorNav').find('.active').removeClass('active')
+  $(this).addClass('active');
 }
 
 //save information from JSON file into local variable
@@ -123,16 +133,6 @@ function indicatorMaker() {
 //timer reset
 function resetInterval() {
   clearInterval(interval);
-}
-
-//function that allows user to select and index from the carousel and move to that shoutout
-function indexSelector() {
-  universalClickHandler();
-  classmateNumberTracker = $(this).data('index');
-  appendClassmate();
-  $('p, h3').fadeIn('slow');
-  $('#indicatorNav').find('.active').removeClass('active')
-  $(this).addClass('active');
 }
 
 //function which restarts timer and fades out current shoutout. Used on next, prev and indexSelector
