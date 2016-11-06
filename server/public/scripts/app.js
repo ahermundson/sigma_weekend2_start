@@ -33,6 +33,7 @@
 
 var classObject;
 var classmateNumberTracker = 0;
+var interval = window.setInterval(nextClick, 10000);
 
 $(document).ready(function(){
   displayFirstObject();
@@ -44,6 +45,8 @@ $(document).ready(function(){
 
     //Move to next classmate when next button is clicked
     function nextClick() {
+      resetInterval();
+      interval();
       $('p, h3').fadeOut('slow');
       $('p, h3').remove();
       classmateNumberTracker++;
@@ -56,9 +59,12 @@ $(document).ready(function(){
       }
       appendClassmate();
       $('p, h3').fadeIn('slow');
+      console.log("inteval");
     }
     //Move to previous classmate when previous button is clicked
     function prevClick() {
+      resetInterval();
+      interval();
       $('p, h3').fadeOut('slow');
       $('p, h3').remove();
       classmateNumberTracker--;
@@ -93,6 +99,7 @@ $(document).ready(function(){
           $('#display-container').append('<h3>' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  data.sigmanauts[classmateNumberTracker].git_username + '</h3>');
           $('#display-container').append('<p>' + data.sigmanauts[classmateNumberTracker].shoutout + '</p>');
           $('p, h3').fadeIn();
+          interval();
         }
       });
     }
@@ -117,5 +124,10 @@ $(document).ready(function(){
           $('li').first().addClass("active");
         }
       });
+    }
+
+    function resetInterval() {
+      clearInterval(interval);
+      console.log("is this working")
     }
 });
