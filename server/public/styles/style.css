@@ -1,1 +1,30 @@
+h3 {
+  display: none;
+}
 
+p {
+  display: none;
+}
+
+#display-container ul {
+  display: flex;
+  justify-content: space-around;
+  margin-left: -120px;
+  margin-top: 50px;
+  list-style-type: none;
+}
+
+li {
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.active {
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+}

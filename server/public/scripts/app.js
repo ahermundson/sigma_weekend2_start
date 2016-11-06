@@ -36,6 +36,7 @@ var classmateNumberTracker = 0;
 
 $(document).ready(function(){
   displayFirstObject();
+  indicatorMaker();
   getClassObject();
   $('#next').on('click', nextClick);
   $('#prev').on('click', prevClick);
@@ -43,21 +44,33 @@ $(document).ready(function(){
 
     //Move to next classmate when next button is clicked
     function nextClick() {
-      $('#object-container').empty();
+      $('p, h3').fadeOut('slow');
+      $('p, h3').remove();
       classmateNumberTracker++;
       if (classmateNumberTracker > classObject.sigmanauts.length - 1) {
         classmateNumberTracker = 0;
+        $('#indicatorNav').find('.active').removeClass('active');
+        $('li').first().addClass('active');
+      } else {
+        $('#indicatorNav').find('.active').removeClass('active').next().addClass('active');
       }
       appendClassmate();
+      $('p, h3').fadeIn('slow');
     }
     //Move to previous classmate when previous button is clicked
     function prevClick() {
-      $('#object-container').empty();
+      $('p, h3').fadeOut('slow');
+      $('p, h3').remove();
       classmateNumberTracker--;
       if (classmateNumberTracker < 0) {
         classmateNumberTracker = classObject.sigmanauts.length - 1;
+        $('#indicatorNav').find('.active').removeClass('active');
+        $('li').last().addClass('active');
+      } else {
+        $('#indicatorNav').find('.active').removeClass('active').prev().addClass('active');
       }
       appendClassmate();
+      $('p, h3').fadeIn('slow');
     }
 
     //save information from JSON file into local variable
@@ -77,14 +90,32 @@ $(document).ready(function(){
         type: "GET",
         url: "/data",
         success: function(data){
-          $('#object-container').append('<h3>' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  data.sigmanauts[classmateNumberTracker].git_username + '</h3>');
-          $('#object-container').append('<p>' + data.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+          $('#display-container').append('<h3>' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  data.sigmanauts[classmateNumberTracker].git_username + '</h3>');
+          $('#display-container').append('<p>' + data.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+          $('p, h3').fadeIn();
         }
       });
     }
     //Append classmates upon click of next or previous
     function appendClassmate() {
-      $('#object-container').append('<h3>' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</h3>');
-      $('#object-container').append('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+      $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+      $('#display-container').prepend('<h3>' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</h3>');
+
+    }
+
+    function indicatorMaker() {
+      $.ajax({
+        type: "GET",
+        url: "/data",
+        success: function(data){
+          var total = data.sigmanauts.length;
+          $('#display-container').append('<ul id="indicatorNav"></ul>');
+          for (var i = 0; i < total; i++) {
+            $('#indicatorNav').append('<li></li>');
+            $('li').last().data('data-index', i);
+          }
+          $('li').first().addClass("active");
+        }
+      });
     }
 });
