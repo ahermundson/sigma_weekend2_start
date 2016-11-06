@@ -47,10 +47,7 @@ $(document).ready(function(){
 
 //Move to next classmate when next button is clicked
 function nextClick() {
-  resetInterval();
-  interval = window.setInterval(nextClick, 10000)
-  $('p, h3').fadeOut('slow');
-  $('p, h3').remove();
+  universalClickHandler();
   classmateNumberTracker++;
   if (classmateNumberTracker > classObject.sigmanauts.length - 1) {
     classmateNumberTracker = 0;
@@ -64,10 +61,7 @@ function nextClick() {
 }
 //Move to previous classmate when previous button is clicked
 function prevClick() {
-  resetInterval();
-  interval = window.setInterval(nextClick, 10000)
-  $('p, h3').fadeOut('slow');
-  $('p, h3').remove();
+  universalClickHandler();
   classmateNumberTracker--;
   if (classmateNumberTracker < 0) {
     classmateNumberTracker = classObject.sigmanauts.length - 1;
@@ -110,6 +104,7 @@ function appendClassmate() {
   $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
 }
 
+//dynamically creates the index carousel depending on number of items in shoutout array
 function indicatorMaker() {
   $.ajax({
     type: "GET",
@@ -125,21 +120,25 @@ function indicatorMaker() {
     }
   });
 }
-
+//timer reset
 function resetInterval() {
   clearInterval(interval);
 }
 
-
+//function that allows user to select and index from the carousel and move to that shoutout
 function indexSelector() {
-  resetInterval();
-  interval = window.setInterval(nextClick, 10000)
-  $('p, h3').fadeOut('slow');
-  $('p, h3').remove();
+  universalClickHandler();
   classmateNumberTracker = $(this).data('index');
   appendClassmate();
   $('p, h3').fadeIn('slow');
   $('#indicatorNav').find('.active').removeClass('active')
   $(this).addClass('active');
-  console.log(classmateNumberTracker);
+}
+
+//function which restarts timer and fades out current shoutout. Used on next, prev and indexSelector
+function universalClickHandler() {
+  resetInterval();
+  interval = window.setInterval(nextClick, 10000)
+  $('p, h3').fadeOut('slow');
+  $('p, h3').remove();
 }
