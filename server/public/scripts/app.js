@@ -32,11 +32,35 @@
 
 
 var classObject;
+var classmateNumberTracker = 0;
 
 $(document).ready(function(){
+  displayFirstObject();
   getClassObject();
-  $('#next').on('click', consoleObject);
+  $('#next').on('click', nextClick);
+  $('#prev').on('click', prevClick);
 
+
+    //Move to next classmate when next button is clicked
+    function nextClick() {
+      $('#object-container').empty();
+      classmateNumberTracker++;
+      if (classmateNumberTracker > classObject.sigmanauts.length - 1) {
+        classmateNumberTracker = 0;
+      }
+      appendClassmate();
+    }
+    //Move to previous classmate when previous button is clicked
+    function prevClick() {
+      $('#object-container').empty();
+      classmateNumberTracker--;
+      if (classmateNumberTracker < 0) {
+        classmateNumberTracker = classObject.sigmanauts.length - 1;
+      }
+      appendClassmate();
+    }
+
+    //save information from JSON file into local variable
     function getClassObject() {
       $.ajax({
         type: "GET",
@@ -46,7 +70,21 @@ $(document).ready(function(){
         }
       });
     }
-    function consoleObject() {
-        console.log(classObject);
-      }
+
+    //Display first object from JSON file
+    function displayFirstObject() {
+      $.ajax({
+        type: "GET",
+        url: "/data",
+        success: function(data){
+          $('#object-container').append('<h3>' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  data.sigmanauts[classmateNumberTracker].git_username + '</h3>');
+          $('#object-container').append('<p>' + data.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+        }
+      });
+    }
+    //Append classmates upon click of next or previous
+    function appendClassmate() {
+      $('#object-container').append('<h3>' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</h3>');
+      $('#object-container').append('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+    }
 });
