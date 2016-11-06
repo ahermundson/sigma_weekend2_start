@@ -108,11 +108,6 @@ function displayFirstObject() {
     }
   });
 }
-//Append classmates upon click of next or previous
-function appendClassmate() {
-  $('#display-container').prepend('<h3>- ' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</h3>');
-  $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
-}
 
 //dynamically creates the index carousel depending on number of items in shoutout array
 function indicatorMaker() {
@@ -130,6 +125,14 @@ function indicatorMaker() {
     }
   });
 }
+
+//Append classmates upon click of next or previous
+function appendClassmate() {
+  $('#display-container').prepend('<h3>- ' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</h3>');
+  $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+}
+
+
 //timer reset
 function resetInterval() {
   clearInterval(interval);
