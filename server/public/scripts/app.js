@@ -33,7 +33,7 @@
 
 var classObject;
 var classmateNumberTracker = 0;
-var interval = window.setInterval(nextClick, 10000);
+var interval;
 
 $(document).ready(function(){
   displayFirstObject();
@@ -41,93 +41,105 @@ $(document).ready(function(){
   getClassObject();
   $('#next').on('click', nextClick);
   $('#prev').on('click', prevClick);
-
-
-    //Move to next classmate when next button is clicked
-    function nextClick() {
-      resetInterval();
-      interval();
-      $('p, h3').fadeOut('slow');
-      $('p, h3').remove();
-      classmateNumberTracker++;
-      if (classmateNumberTracker > classObject.sigmanauts.length - 1) {
-        classmateNumberTracker = 0;
-        $('#indicatorNav').find('.active').removeClass('active');
-        $('li').first().addClass('active');
-      } else {
-        $('#indicatorNav').find('.active').removeClass('active').next().addClass('active');
-      }
-      appendClassmate();
-      $('p, h3').fadeIn('slow');
-      console.log("inteval");
-    }
-    //Move to previous classmate when previous button is clicked
-    function prevClick() {
-      resetInterval();
-      interval();
-      $('p, h3').fadeOut('slow');
-      $('p, h3').remove();
-      classmateNumberTracker--;
-      if (classmateNumberTracker < 0) {
-        classmateNumberTracker = classObject.sigmanauts.length - 1;
-        $('#indicatorNav').find('.active').removeClass('active');
-        $('li').last().addClass('active');
-      } else {
-        $('#indicatorNav').find('.active').removeClass('active').prev().addClass('active');
-      }
-      appendClassmate();
-      $('p, h3').fadeIn('slow');
-    }
-
-    //save information from JSON file into local variable
-    function getClassObject() {
-      $.ajax({
-        type: "GET",
-        url: "/data",
-        success: function(data){
-          classObject = data;
-        }
-      });
-    }
-
-    //Display first object from JSON file
-    function displayFirstObject() {
-      $.ajax({
-        type: "GET",
-        url: "/data",
-        success: function(data){
-          $('#display-container').append('<h3>' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  data.sigmanauts[classmateNumberTracker].git_username + '</h3>');
-          $('#display-container').append('<p>' + data.sigmanauts[classmateNumberTracker].shoutout + '</p>');
-          $('p, h3').fadeIn();
-          interval();
-        }
-      });
-    }
-    //Append classmates upon click of next or previous
-    function appendClassmate() {
-      $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
-      $('#display-container').prepend('<h3>' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</h3>');
-
-    }
-
-    function indicatorMaker() {
-      $.ajax({
-        type: "GET",
-        url: "/data",
-        success: function(data){
-          var total = data.sigmanauts.length;
-          $('#display-container').append('<ul id="indicatorNav"></ul>');
-          for (var i = 0; i < total; i++) {
-            $('#indicatorNav').append('<li></li>');
-            $('li').last().data('data-index', i);
-          }
-          $('li').first().addClass("active");
-        }
-      });
-    }
-
-    function resetInterval() {
-      clearInterval(interval);
-      console.log("is this working")
-    }
+  $('#display-container').on('click', 'li', indexSelector);
 });
+
+
+//Move to next classmate when next button is clicked
+function nextClick() {
+  resetInterval();
+  interval = window.setInterval(nextClick, 10000)
+  $('p, h3').fadeOut('slow');
+  $('p, h3').remove();
+  classmateNumberTracker++;
+  if (classmateNumberTracker > classObject.sigmanauts.length - 1) {
+    classmateNumberTracker = 0;
+    $('#indicatorNav').find('.active').removeClass('active');
+    $('li').first().addClass('active');
+  } else {
+    $('#indicatorNav').find('.active').removeClass('active').next().addClass('active');
+  }
+  appendClassmate();
+  $('p, h3').fadeIn('slow');
+}
+//Move to previous classmate when previous button is clicked
+function prevClick() {
+  resetInterval();
+  interval = window.setInterval(nextClick, 10000)
+  $('p, h3').fadeOut('slow');
+  $('p, h3').remove();
+  classmateNumberTracker--;
+  if (classmateNumberTracker < 0) {
+    classmateNumberTracker = classObject.sigmanauts.length - 1;
+    $('#indicatorNav').find('.active').removeClass('active');
+    $('li').last().addClass('active');
+  } else {
+    $('#indicatorNav').find('.active').removeClass('active').prev().addClass('active');
+  }
+  appendClassmate();
+  $('p, h3').fadeIn('slow');
+}
+
+//save information from JSON file into local variable
+function getClassObject() {
+  $.ajax({
+    type: "GET",
+    url: "/data",
+    success: function(data){
+      classObject = data;
+    }
+  });
+}
+
+//Display first object from JSON file
+function displayFirstObject() {
+  $.ajax({
+    type: "GET",
+    url: "/data",
+    success: function(data){
+      $('#display-container').append('<p>' + data.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+      $('#display-container').append('<h3>-' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  data.sigmanauts[classmateNumberTracker].git_username + '</h3>');
+      $('p, h3').fadeIn();
+      interval = window.setInterval(nextClick, 10000)
+    }
+  });
+}
+//Append classmates upon click of next or previous
+function appendClassmate() {
+  $('#display-container').prepend('<h3>- ' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: ' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</h3>');
+  $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
+}
+
+function indicatorMaker() {
+  $.ajax({
+    type: "GET",
+    url: "/data",
+    success: function(data){
+      var total = data.sigmanauts.length;
+      $('#display-container').append('<ul id="indicatorNav"></ul>');
+      for (var i = 0; i < total; i++) {
+        $('#indicatorNav').append('<li></li>');
+        $('li').last().data('index', i);
+      }
+      $('li').first().addClass("active");
+    }
+  });
+}
+
+function resetInterval() {
+  clearInterval(interval);
+}
+
+
+function indexSelector() {
+  resetInterval();
+  interval = window.setInterval(nextClick, 10000)
+  $('p, h3').fadeOut('slow');
+  $('p, h3').remove();
+  classmateNumberTracker = $(this).data('index');
+  appendClassmate();
+  $('p, h3').fadeIn('slow');
+  $('#indicatorNav').find('.active').removeClass('active')
+  $(this).addClass('active');
+  console.log(classmateNumberTracker);
+}
