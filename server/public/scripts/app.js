@@ -105,8 +105,8 @@ function displayFirstObject() {
     success: function(data){
       var gitUrl = "https://www.github.com/" + data.sigmanauts[classmateNumberTracker].git_username;
       $('#display-container').append('<p>' + data.sigmanauts[classmateNumberTracker].shoutout + '</p>');
-      $('#display-container').append('<h3>-' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: <span>' +  data.sigmanauts[classmateNumberTracker].git_username + '</span></h3>');
-      $('span').attr("href", gitUrl)
+      $('#display-container').append('<h3>-' + data.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: <a>' +  data.sigmanauts[classmateNumberTracker].git_username + '</a></h3>');
+      $('a').attr("href", gitUrl)
       $('p, h3').fadeIn();
       interval = window.setInterval(nextClick, 10000)
     }
@@ -133,9 +133,9 @@ function indicatorMaker() {
 //Append classmates upon click of next or previous
 function appendClassmate() {
   var gitUrl = "https://www.github.com/" + classObject.sigmanauts[classmateNumberTracker].git_username;
-  $('#display-container').prepend('<h3>- ' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: <span>' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</span></h3>');
+  $('#display-container').prepend('<h3>- ' + classObject.sigmanauts[classmateNumberTracker].name + ' - ' + 'Git Username: <a>' +  classObject.sigmanauts[classmateNumberTracker].git_username + '</a></h3>');
   $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
-  $('span').attr("href", gitUrl);
+  $('a').attr("href", gitUrl);
 }
 
 //timer reset
