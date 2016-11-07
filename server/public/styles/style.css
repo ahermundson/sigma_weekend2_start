@@ -55,6 +55,12 @@ p {
   color: white;
 }
 
+.btn-primary:active {
+  background-color: rgb(223,179,145);
+  border: 1px solid white;
+  color: white;
+}
+
 .container {
   background-color: rgba(140,179,178,0.9);
 }
@@ -73,6 +79,9 @@ li {
   background-color: rgb(176,190,177);
   border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 li:hover {

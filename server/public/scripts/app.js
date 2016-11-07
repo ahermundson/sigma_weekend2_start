@@ -38,6 +38,8 @@ $(document).ready(function(){
   $('#next').on('click', nextClick);
   $('#prev').on('click', prevClick);
   $('#display-container').on('click', 'li', indexSelector);
+  $('#display-container').on('mouseenter', 'li', initialGenerator);
+  $('#display-container').on('mouseleave', 'li', removeInitials);
 });
 
 
@@ -132,7 +134,6 @@ function appendClassmate() {
   $('#display-container').prepend('<p>' + classObject.sigmanauts[classmateNumberTracker].shoutout + '</p>');
 }
 
-
 //timer reset
 function resetInterval() {
   clearInterval(interval);
@@ -144,4 +145,24 @@ function universalClickHandler() {
   interval = window.setInterval(nextClick, 10000)
   $('p, h3').fadeOut('slow');
   $('p, h3').remove();
+}
+
+
+// Gets initials for each classmate
+function initialGenerator() {
+  var index = $(this).data('index');
+  var initials = classObject.sigmanauts[index].name.charAt(0);
+    for (var i = 0; i < classObject.sigmanauts[index].name.length; i++) {
+      if(classObject.sigmanauts[index].name.charAt(i) === " ") {
+        initials += classObject.sigmanauts[index].name.charAt(i + 1);
+      }
+    }
+  $(this).animate({height: '30px', width: '30px'});
+  $(this).text(initials);
+}
+
+function removeInitials() {
+  $(this).animate({height: '10px', width: '10px'});
+  $(this).text("");
+
 }
